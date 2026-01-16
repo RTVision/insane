@@ -1,6 +1,6 @@
 {
   "name": "html-sane",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Lean and configurable whitelist-oriented HTML sanitizer with native Sanitizer API support",
   "type": "module",
   "repository": {
