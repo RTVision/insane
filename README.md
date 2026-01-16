@@ -1,20 +1,50 @@
-# insane
+# html-sane
 
 Lean and configurable whitelist-oriented HTML sanitizer with native Sanitizer API support.
+
+> **Note:** This is a TypeScript rewrite of the original [`insane`](https://github.com/bevacqua/insane) package by [@bevacqua](https://github.com/bevacqua). The original package is no longer maintained and has known security vulnerabilities (CVE-2020-26303). This fork has been renamed to `html-sane` and published as a new package.
 
 ## Features
 
 - **Whitelist-based** - Only allows tags, attributes, and classes you explicitly permit
 - **URL sanitization** - Validates URL schemes in href, src, and other URI attributes
 - **Lightweight** - ~4KB gzipped with zero runtime dependencies (except `html-entities`)
-- **TypeScript** - Full type definitions included
+- **TypeScript** - Written in TypeScript with full type definitions
 - **Native API support** - Automatically uses the browser's native Sanitizer API when available and compatible
 - **Universal** - Works in Node.js and browsers
-- **Security hardened** - Fixes CVE-2020-26303 (ReDoS vulnerability) and includes 180+ security tests
+- **Security hardened** - Fixes CVE-2020-26303 (ReDoS vulnerability) and includes 280+ security tests
+
+## Installation
+
+```bash
+npm install html-sane
+# or
+pnpm add html-sane
+# or
+yarn add html-sane
+```
+
+### Migrating from `insane`
+
+If you're migrating from the original `insane` package:
+
+```bash
+npm uninstall insane
+npm install html-sane
+```
+
+Then update your imports:
+
+```diff
+- import insane from 'insane'
++ import insane from 'html-sane'
+```
+
+The API is fully compatible - no other code changes required.
 
 ## Security
 
-This v3 rewrite addresses the following security issues from the original package:
+This rewrite addresses the following security issues from the original package:
 
 - **CVE-2020-26303**: Regular Expression Denial of Service (ReDoS) - Fixed by rewriting the HTML parser to use a state machine approach instead of vulnerable regex patterns
 - Comprehensive security test suite covering:
@@ -24,21 +54,14 @@ This v3 rewrite addresses the following security issues from the original packag
   - Malformed HTML handling
   - Nested/recursive attack patterns
   - ReDoS prevention
-
-## Installation
-
-```bash
-npm install insane
-# or
-pnpm add insane
-# or
-yarn add insane
-```
+  - mXSS (mutation XSS) vectors
+  - DOM clobbering prevention
+  - Prototype pollution prevention
 
 ## Usage
 
 ```typescript
-import insane from 'insane'
+import insane from 'html-sane'
 
 // Basic usage with defaults
 insane('<script>alert(1)</script><p>Hello</p>')
@@ -163,7 +186,7 @@ insane('<p>hello world</p>', {
 
 ## Native Sanitizer API
 
-In supported browsers (Chrome 145+, Firefox 148+), `insane` will automatically use the native [Sanitizer API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API) when:
+In supported browsers, `html-sane` will automatically use the native [Sanitizer API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Sanitizer_API) when:
 
 1. The API is available in the browser
 2. The options don't use features unsupported by the native API (`allowedClasses`, `filter`, `transformText`, or custom `allowedSchemes`)
@@ -175,7 +198,7 @@ This provides better performance and security in modern browsers while maintaini
 Full TypeScript support with exported types:
 
 ```typescript
-import insane, { type InsaneOptions, type TokenInfo, defaults } from 'insane'
+import insane, { type InsaneOptions, type TokenInfo, defaults } from 'html-sane'
 
 const options: InsaneOptions = {
   allowedTags: ['p', 'strong'],
@@ -184,6 +207,10 @@ const options: InsaneOptions = {
 
 console.log(defaults.allowedTags)
 ```
+
+## Credits
+
+This package is a TypeScript rewrite of [insane](https://github.com/bevacqua/insane) by [Nicolas Bevacqua](https://github.com/bevacqua).
 
 ## License
 
