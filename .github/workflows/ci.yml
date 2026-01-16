@@ -29,17 +29,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Check formatting
-        run: pnpm format:check
-
-      - name: Run oxlint
-        run: pnpm lint
-
-      - name: Run tsgolint (type-aware linting)
-        run: pnpm lint:types
-
       - name: Check types
         run: pnpm typecheck
+
+      - name: Run linter (type-aware)
+        run: pnpm lint
+
+      - name: Check formatting
+        run: pnpm format:check
 
   test:
     name: Test (Node ${{ matrix.node-version }})
