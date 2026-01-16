@@ -1,30 +1,77 @@
 {
-  "name": "insane",
-  "version": "2.6.2",
-  "description": "Lean and configurable whitelist-oriented HTML sanitizer",
+  "name": "html-sane",
+  "version": "1.0.0",
+  "description": "Lean and configurable whitelist-oriented HTML sanitizer with native Sanitizer API support",
+  "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bevacqua/insane.git"
+    "url": "git+https://github.com/kalvenschraut/html-sane.git"
   },
-  "author": "Nicolas Bevacqua <nicolasbevacqua@gmail.com> (https://ponyfoo.com/)",
+  "author": "Kalvens Schraut",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bevacqua/insane/issues"
+    "url": "https://github.com/kalvenschraut/html-sane/issues"
   },
-  "homepage": "https://github.com/bevacqua/insane",
-  "main": "insane.js",
-  "browser": {
-    "he": "./she.js"
-  },
+  "homepage": "https://github.com/kalvenschraut/html-sane#readme",
+  "keywords": [
+    "sanitize",
+    "html",
+    "xss",
+    "whitelist",
+    "security",
+    "sanitizer",
+    "html-sanitizer",
+    "xss-prevention",
+    "dom-purify-alternative"
+  ],
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "tape test/**/*.js"
+    "build": "tsdown",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsgo --noEmit",
+    "lint": "oxlint --type-aware src test",
+    "format": "oxfmt --write src test '!test/fixtures'",
+    "format:check": "oxfmt --check src test '!test/fixtures'",
+    "check": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test",
+    "prepublishOnly": "pnpm run build",
+    "prepare": "husky"
   },
   "dependencies": {
-    "assignment": "2.0.0",
-    "he": "0.5.0"
+    "html-entities": "^2.6.0"
   },
   "devDependencies": {
-    "sinon": "1.17.5",
-    "tape": "3.5.0"
+    "@typescript/native-preview": "^7.0.0-dev.20250601.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "oxfmt": "^0.24.0",
+    "oxlint": "^1.39.0",
+    "oxlint-tsgolint": "^0.11.1",
+    "tsdown": "^0.12.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index-CrKy-jPC.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index-CrKy-jPC.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "oxlint --type-aware --fix",
+      "oxfmt --write"
+    ]
   }
 }
